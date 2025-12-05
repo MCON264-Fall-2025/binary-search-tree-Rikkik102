@@ -15,6 +15,21 @@ public class TraversalExercises {
         // TODO: implement iterative preorder using Deque as a stack
         // Hint: push root; while stack not empty:
         //   pop node, visit it, then push right child, then left child
+        Deque<TreeNode<T>> stack = new ArrayDeque<>();
+        if (root == null) {
+            return result;
+        }
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            TreeNode<T> current = stack.pop();
+            result.add(current.value);
+            if (current.right != null) {
+                stack.push(current.right);
+            }
+            if (current.left != null) {
+                stack.push(current.left);
+            }
+        }
         return result;
     }
 
@@ -24,6 +39,18 @@ public class TraversalExercises {
         // TODO: implement iterative inorder
         // Hint: use a pointer 'curr' and a stack:
         //   while (curr != null || !stack.isEmpty()) { ... }
+        Deque<TreeNode<T>> stack = new ArrayDeque<>();
+        TreeNode<T> curr = root;
+        while (curr != null || !stack.isEmpty()) {
+            while (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+            curr = stack.pop();
+            result.add(curr.value);
+            // Move to right subtree
+            curr = curr.right;
+        }
         return result;
     }
 
@@ -39,6 +66,23 @@ public class TraversalExercises {
     public static <T extends Comparable<T>> List<T> levelOrderUsingQueue(TreeNode<T> root) {
         List<T> result = new ArrayList<>();
         // TODO: implement BFS using a Queue<TreeNode<T>>
+        Queue<TreeNode<T>> queue = new LinkedList<>();
+
+        if (root == null) {
+            return result;
+        }
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode<T> current = queue.poll();
+            result.add(current.value);
+
+            if (current.left != null) {
+                queue.offer(current.left);
+            }
+            if (current.right != null) {
+                queue.offer(current.right);
+            }
+        }
         return result;
     }
 }

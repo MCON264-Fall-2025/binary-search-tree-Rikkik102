@@ -43,6 +43,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     private void preorderRecursive(TreeNode<T> node, List<T> out) {
         // TODO: implement Preorder: Root -> Left -> Right
+        if (node == null) {
+        }
+        else{
+              out.add(node.getValue());
+
+                  preorderRecursive(node.getLeft(), out);
+
+                  preorderRecursive(node.getRight(), out);
+
+                }
         // hint: check for null, then visit node, then recurse on left and right
     }
 
@@ -54,6 +64,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     private void inorderRecursive(TreeNode<T> node, List<T> out) {
         // TODO: implement Inorder: Left -> Root -> Right
+        if (node == null) {
+        }
+        else{
+
+            inorderRecursive(node.getLeft(), out);
+            out.add(node.getValue());
+            inorderRecursive(node.getRight(), out);
+
+        }
     }
 
     public List<T> postorderRecursive() {
@@ -64,6 +83,18 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     private void postorderRecursive(TreeNode<T> node, List<T> out) {
         // TODO: implement Postorder: Left -> Right -> Root
+        if (node == null) {
+        }
+        else{
+
+
+            postorderRecursive(node.getLeft(), out);
+
+            postorderRecursive(node.getRight(), out);
+            out.add(node.getValue());
+
+
+        }
     }
 
     // --------- Level-order (Breadth-First) ----------
@@ -71,12 +102,28 @@ public class BinarySearchTree<T extends Comparable<T>> {
     public List<T> levelOrder() {
         List<T> result = new ArrayList<>();
         // TODO: implement level-order using a Queue<TreeNode<T>>
+
         // 1. if root is null, return empty list
         // 2. enqueue root
         // 3. while queue not empty:
         //      - dequeue node
         //      - add node.value to result
         //      - enqueue children if not null (left then right)
+        Queue<TreeNode<T>> queue = new ArrayDeque<>();
+        if (root == null) {
+            return result;
+        }
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode<T> current = queue.poll();
+            result.add(current.value);
+            if (current.left != null) {
+                queue.offer(current.left);
+            }
+            if (current.right != null) {
+                queue.offer(current.right);
+            }
+        }
         return result;
     }
 
@@ -88,6 +135,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
 //            default ->
 //                throw new IllegalArgumentException("Not implemented yet");
 //        };
-        return new ArrayList<>(); // placeholder
+        return switch (type) {
+            case INORDER -> inorderRecursive();
+            case PREORDER -> preorderRecursive();
+            case POSTORDER -> postorderRecursive();
+            case LEVEL_ORDER -> levelOrder();
+            default -> throw new IllegalArgumentException("Not implemented yet");
+        };
+
     }
 }
